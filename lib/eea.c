@@ -7,32 +7,42 @@
 
 #include "eea.h"
 
-struct EX_GCD extended_euclidean(struct Poly *a, struct Poly *b)
+struct P_EX_GCD p_extended_euclidean(struct Poly a, struct Poly b)
 {
-    struct EX_GCD ex_gcd;
+    if (equal(b, ZERO))
+        return (struct P_EX_GCD){.s = ONE, .t = ZERO, .gcd = ZERO};
 
-    if (equal(b, &ZERO)) {  // b=0時直接結束求解
-        ex_gcd.s = ONE;
-        ex_gcd.t = ZERO;
-        ex_gcd.gcd = ZERO;
-        return ex_gcd;
+    struct Poly old_r = a, r = b;
+    struct Poly old_s = ONE, s = ZERO;
+    struct Poly old_t = ZERO, t = ONE;
+
+    while (!equal(r, ZERO)) {
+        struct Poly q = div(old_r, r);
+        struct Poly temp = old_r;
+        old_r = r;
+        r = sub(temp, mul(q, r));
+        temp = old_s;
+        old_s = s;
+        s = sub(temp, mul(q, s));
+        temp = old_t;
+        old_t = t;
+        t = sub(temp, mul(q, t));
     }
 
-    struct Poly old_r, old_s, old_t, r, s, t;
+    return (struct P_EX_GCD){.s = old_s, .t = old_t, .gcd = old_r};
+}
 
-    copy(&old_r, a);
-    copy(&r, b);
+struct I_EX_GCD i_extended_euclidean(int a, int b)
+{
+    if (b == 0)
+        return (struct I_EX_GCD){.s = 1, .t = 0, .gcd = 0};
 
-    copy(&old_s, &ONE);
-    copy(&s, &ZERO);
-
-    copy(&old_t, &ZERO);
-    copy(&t, &ONE);
-
-    while (!equal(&r, &ZERO)) {  //按擴展歐基里德算法進行循環
-        struct Poly q = div(&old_r, &r);
-        struct Poly temp = old_r;
-        // FIXME
+    int old_r = a, r = b;
+    int old_s = 1, s = 0;
+    int old_t = 0, t = 1;
+    while (r != 0) {
+        int q = old_r / r;
+        int temp = old_r;
         old_r = r;
         r = temp - q * r;
         temp = old_s;
@@ -42,8 +52,5 @@ struct EX_GCD extended_euclidean(struct Poly *a, struct Poly *b)
         old_t = t;
         t = temp - q * t;
     }
-    ex_gcd.s = old_s;
-    ex_gcd.t = old_t;
-    ex_gcd.gcd = old_r;
-    return ex_gcd;
+    return (struct I_EX_GCD){.s = old_s, .t = old_t, .gcd = old_r};
 }

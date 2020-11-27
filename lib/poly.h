@@ -14,11 +14,11 @@ const struct Poly ONE = {.coef = {1}, .size = 1};
 
 void initPoly(struct Poly *target);
 struct Poly initPolyV(int args, ...);
-struct Poly add(const struct Poly *a, const struct Poly *b);
-struct Poly sub(const struct Poly *a, const struct Poly *b);
-struct Poly mul(const struct Poly *a, const struct Poly *b);
-struct Poly div(const struct Poly *a, const struct Poly *b);
-bool equal(const struct Poly *a, const struct Poly *b);
+struct Poly add(struct Poly a, struct Poly b);
+struct Poly sub(struct Poly a, struct Poly b);
+struct Poly mul(struct Poly a, struct Poly b);
+struct Poly div(struct Poly a, struct Poly b);
+bool equal(struct Poly a, struct Poly b);
 void copy(struct Poly *dst, const struct Poly *src);
 
 #endif
