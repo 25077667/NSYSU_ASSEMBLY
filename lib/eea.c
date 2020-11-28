@@ -7,9 +7,11 @@
 
 #include "eea.h"
 
-static struct EX_GCD_P extended_euclidean_p(struct Poly a,
-                                            struct Poly b,
-                                            int module)
+extern struct Poly ZERO;
+extern struct Poly ONE;
+extern struct Poly NOT_EXIST;
+
+struct EX_GCD_P extended_euclidean_p(struct Poly a, struct Poly b, int module)
 {
     if (equal(b, ZERO))
         return (struct EX_GCD_P){.s = ONE, .t = ZERO, .gcd = ZERO};
@@ -34,7 +36,7 @@ static struct EX_GCD_P extended_euclidean_p(struct Poly a,
     return (struct EX_GCD_P){.s = old_s, .t = old_t, .gcd = old_r};
 }
 
-static struct EX_GCD_I extended_euclidean_i(int a, int b)
+struct EX_GCD_I extended_euclidean_i(int a, int b)
 {
     if (b == 0)
         return (struct EX_GCD_I){.s = 1, .t = 0, .gcd = 0};
@@ -66,5 +68,5 @@ int inverse_i(int a, int module)
 struct Poly inverse_p(struct Poly a, struct Poly module, int coprime)
 {
     struct EX_GCD_P eea = extended_euclidean_p(a, module, coprime);
-    return (equal(eea.gcd, ONE) ? eea.s : NOT_EXIT);
+    return (equal(eea.gcd, ONE) ? eea.s : NOT_EXIST);
 }

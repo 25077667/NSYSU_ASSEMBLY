@@ -1,4 +1,4 @@
-#ifndef __PLOY_H__
+#ifndef __POLY_H__
 #define __POLY_H__
 #include <stdbool.h>
 #include <stddef.h>
@@ -6,12 +6,8 @@
 
 struct Poly {
     unsigned int coef[LEN];
-    size_t degree;
+    int degree;
 };
-
-const struct Poly ZERO = {.coef = {0}, .degree = 0};
-const struct Poly ONE = {.coef = {1}, .degree = 0};
-const struct Poly NOT_EXIT = {.coef = {0}, .degree = -1};
 
 void initPoly(struct Poly *target);
 struct Poly initPolyV(int args, ...);
