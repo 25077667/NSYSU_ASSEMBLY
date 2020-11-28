@@ -10,5 +10,9 @@
         "ntru",
         "zout",
         "zout's"
-    ]
+    ],
+    "files.associations": {
+        "type_traits": "cpp",
+        "compare": "cpp"
+    }
 }
