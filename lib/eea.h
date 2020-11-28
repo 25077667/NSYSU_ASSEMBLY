@@ -8,19 +8,22 @@
  */
 
 /* s,t are the coefficient of Bézout's lemma*/
-struct P_EX_GCD {
+struct EX_GCD_P {
     struct Poly s;
     struct Poly t;
     struct Poly gcd;
 };
 
-struct I_EX_GCD {  // s,t是貝祖等式中的係數，gcd是a,b的最大公因數s
+struct EX_GCD_I {
     int s;
     int t;
     int gcd;
 };
 
-struct P_EX_GCD p_extended_euclidean(struct Poly a, struct Poly b);
-struct I_EX_GCD i_extended_euclidean(int a, int b);
+struct EX_GCD_P extended_euclidean_p(struct Poly a, struct Poly b, int module);
+struct EX_GCD_I extended_euclidean_i(int a, int b);
+
+int inverse_i(int a, int module);
+struct Poly inverse_p(struct Poly a, struct Poly module, int coprime);
 
 #endif
