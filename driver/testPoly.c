@@ -2,17 +2,7 @@
 #include "../lib/e4c_lite.h"
 #include "../lib/eea.h"
 #include "../lib/poly.h"
-
-#define GET_NAME(var) #var
-
-void print_poly(const struct Poly p, const char *var_name)
-{
-    printf("This is poly %s: \t", var_name);
-    for (int i = p.degree; i >= 0; i--)
-        printf("%dX^%d + ", p.coef[i], i);
-    printf("\n");
-}
-
+#include "../lib/debug.h"
 
 extern struct Poly ZERO;
 extern struct Poly ONE;
