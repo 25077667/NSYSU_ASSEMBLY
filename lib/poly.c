@@ -51,6 +51,7 @@ struct Poly add(struct Poly a, struct Poly b)
     struct Poly target = {.coef = {0}, .degree = len};
     for (int i = 0; i <= len; i++)
         target.coef[i] = a.coef[i] + b.coef[i];
+    fix_deg(&target);
     return target;
 }
 
@@ -60,6 +61,7 @@ struct Poly sub(struct Poly a, struct Poly b)
     struct Poly target = {.coef = {0}, .degree = len};
     for (int i = 0; i <= len; i++)
         target.coef[i] = a.coef[i] - b.coef[i];
+    fix_deg(&target);
     return target;
 }
 
@@ -78,28 +80,27 @@ struct Poly div(struct Poly a, struct Poly b, int module)
 {
     struct Poly quotient = {.coef = {0}, .degree = 0};
     int index = MAX(a.degree, b.degree);
-    if (index >= b.degree) {
+    if (a.degree >= b.degree) {
         /* a's degree is greather or equal b's degree */
-        for (int i = index; i <= b.degree; i--) {
-            int inverse = inverse_i(b.coef[b.degree], module);
-            if (inverse == -1)
-                E4C_THROW(RuntimeException, "Inverse not found");
-            unsigned int coef = a.coef[i] * inverse;
+        int inverse = inverse_i(b.coef[b.degree], module);
+        if (inverse == -1)
+            E4C_THROW(RuntimeException, "Inverse not found");
+        for (int i = index; i >= b.degree; i--) {
+            unsigned int coef = (a.coef[i] * inverse) % module;
             /* Simulate long division: a -= b * quotient[i] */
-            a = sub(a, mul(b, unitary(coef, i - b.degree)));
-            quotient = add(quotient, unitary(coef, i - b.degree));
+            a = mod(sub(a, mod(mul(b, unitary(coef, i - b.degree)), module)),
+                    module);
+            quotient = mod(add(quotient, unitary(coef, i - b.degree)), module);
         }
         fix_deg(&quotient);
-    } else
-        quotient = a; /* b's degree is greather than a's degree */
-
-    return mod(quotient, module);
+    }
+    return quotient;
 }
 
 struct Poly mod(struct Poly a, int module)
 {
-    for (int i = 0; i <= a.degree; i++)
-        a.coef[i] %= module;
+    for (int i = a.degree; i >= 0; i--)
+        a.coef[i] = (a.coef[i] + module) % module;
     return a;
 }
 

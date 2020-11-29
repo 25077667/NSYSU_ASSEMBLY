@@ -39,7 +39,7 @@ struct EX_GCD_P extended_euclidean_p(struct Poly a, struct Poly b, int module)
 struct EX_GCD_I extended_euclidean_i(int a, int b)
 {
     if (b == 0)
-        return (struct EX_GCD_I){.s = 1, .t = 0, .gcd = 0};
+        return (struct EX_GCD_I){.s = 1, .t = 0, .gcd = a};
 
     int old_r = a, r = b;
     int old_s = 1, s = 0;
@@ -62,11 +62,11 @@ struct EX_GCD_I extended_euclidean_i(int a, int b)
 int inverse_i(int a, int module)
 {
     struct EX_GCD_I eea = extended_euclidean_i(a, module);
-    return ((eea.gcd == 1) ? eea.s : -1);
+    return ((eea.gcd == 1) ? (eea.s + module) % module : -1);
 }
 
 struct Poly inverse_p(struct Poly a, struct Poly module, int coprime)
 {
     struct EX_GCD_P eea = extended_euclidean_p(a, module, coprime);
-    return (equal(eea.gcd, ONE) ? eea.s : NOT_EXIST);
+    return (equal(eea.gcd, ONE) ? mod(add(eea.s, module), coprime) : NOT_EXIST);
 }

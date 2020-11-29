@@ -10,6 +10,11 @@ struct Poly {
 };
 
 void initPoly(struct Poly *target);
+/*
+ * The first element is the numbers of terms.
+ * Eg: 4, 1, 2, 3, 4
+ * Is 4 terms, 1 + 2X + 3X^2 + 4X^3
+ */
 struct Poly initPolyV(int args, ...);
 struct Poly add(struct Poly a, struct Poly b);
 struct Poly sub(struct Poly a, struct Poly b);
