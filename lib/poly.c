@@ -100,7 +100,9 @@ struct Poly div(struct Poly a, struct Poly b, int module)
 struct Poly mod(struct Poly a, int module)
 {
     for (int i = a.degree; i >= 0; i--)
-        a.coef[i] = (a.coef[i] + module) % module;
+        while (a.coef[i] < 0 ||
+               a.coef[i] > module)  // FIXME: might have bug here
+            a.coef[i] = (a.coef[i] + module) % module;
     return a;
 }
 
