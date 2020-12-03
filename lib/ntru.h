@@ -30,7 +30,8 @@ struct Private {
 };
 
 struct Public {
-    struct Poly pubkey;
+    struct Poly h;
+    int p, q;
 };
 
 struct Crypto {
@@ -40,9 +41,9 @@ struct Crypto {
 
 struct Crypto init_Crypto(int N, int p, int q);
 
-/* FIXME: Needs block encryption */
-struct Poly encrypt(struct Poly pubkey, struct Poly r, int p, const char *msg);
+/* Encrypt each char to a Poly */
+struct Poly encrypt(struct Poly pubkey, struct Poly r, int p, char c);
 /* Return from char *msg */
-void decrypt(const struct Poly ciphertext, struct Private prikey, char *msg);
+char decrypt(const struct Poly ciphertext, struct Private prikey);
 
 #endif

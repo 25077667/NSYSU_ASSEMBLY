@@ -1,6 +1,6 @@
-# NSYSU_ASSEMBLY
+#NSYSU_ASSEMBLY
 
-# Topic: NTRU
+#Topic : NTRU
 
 * [Midterm introduction](https://hackmd.io/@25077667/HJCGAYW5P#/)
 > What is this issue?
@@ -8,7 +8,7 @@
 > How is this issue?
 
 ---
-# Some references
+#Some references
 
 [Algorithm Specifications And Supporting Documentation](https://ntru.org/f/ntru-20190330.pdf)
 
