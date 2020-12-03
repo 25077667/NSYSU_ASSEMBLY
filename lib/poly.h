@@ -16,6 +16,7 @@ void initPoly(struct Poly *target);
  * Is 4 terms, 1 + 2X + 3X^2 + 4X^3
  */
 struct Poly initPolyV(int args, ...);
+struct Poly initPolyV2(int args,int* argv);
 struct Poly add(struct Poly a, struct Poly b);
 struct Poly sub(struct Poly a, struct Poly b);
 struct Poly mul(struct Poly a, struct Poly b);

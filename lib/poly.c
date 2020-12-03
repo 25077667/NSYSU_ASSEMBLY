@@ -44,6 +44,14 @@ struct Poly initPolyV(int args, ...)
     va_end(ap);
     return target;
 }
+struct Poly initPolyV2(int args,int* argv)
+{
+    struct Poly target = {.coef = {0}, .degree = 0};
+    target.degree = args - 1;
+    for(int i=0;i<args;i++)
+        target.coef[i] = argv[i];
+    return target;
+}
 
 struct Poly add(struct Poly a, struct Poly b)
 {

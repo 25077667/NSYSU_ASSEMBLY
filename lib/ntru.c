@@ -11,7 +11,11 @@ struct NTRU {
 static struct Poly gen_poly(int N, int module)
 {
     // FIXME: Init as some random methods
-    return initPolyV(1, 2, 3);
+    srand(time(NULL));
+    int argv[N];
+    for(int i=0;i<N;i++)
+        argv[i] = rand()%module;
+    return initPolyV2(N,argv);
 }
 
 static struct NTRU init_NTRU(int N, int p, int q)
@@ -58,9 +62,24 @@ struct Crypto init_Crypto(int N, int p, int q)
     return target;
 }
 
-static struct Poly char2poly(struct Public key, char c) {}
+static struct Poly char2poly(struct Public key, char c) 
+{
+    int arr[8] = {0};
+    char t=1;
+    for (int i=0;i<8;i++,t<<=1)
+        if(c&t)
+            arr[i] = 1;
+    return initPolyV2(8,arr);
+}
 
-static char poly2char(const struct Poly m, struct Private key) {}
+static char poly2char(const struct Poly m, struct Private key)
+{
+    char result=0, t=1;
+    for (int i=0;i<8;i++,t<<=1)
+        if(m.coef[i])
+            result |= t;
+    return result;
+}
 
 struct Poly encrypt(char c, struct Public pubkey)
 {
