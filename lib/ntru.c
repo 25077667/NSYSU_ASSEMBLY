@@ -27,7 +27,7 @@ static struct NTRU init_NTRU(int N, int p, int q)
     return target;
 }
 
-static struct Poly gen_pubkey(struct NTRU info) {}
+static struct Public gen_pubkey(struct NTRU info) {}
 static struct Private gen_prikey(struct NTRU info) {}
 struct Crypto init_Crypto(int N, int p, int q)
 {
@@ -37,21 +37,27 @@ struct Crypto init_Crypto(int N, int p, int q)
     return target;
 }
 
-static struct Poly msg2poly(const char *msg) {}
-static void poly2msg(const struct Poly m, char *msg) {}
-
-struct Poly encrypt(struct Poly pubkey, struct Poly r, int p, const char *msg)
+static struct Poly char2poly(int max_degree, int q, char c) 
 {
-    struct Poly rh = mul(pubkey, r);
-    for (int i = 0; i <= rh.degree; i++)
-        rh.coef[i] *= p;
-    struct Poly msg_p = msg2poly(msg);
-    return add(rh, msg_p);
+	
 }
 
-void decrypt(const struct Poly ciphertext, struct Private prikey, char *msg)
+static void poly2char(const struct Poly m, int p, int q, char c) {}
+
+struct Poly encrypt(struct Public pubkey, char c)
+{
+	// FIXME: Init a random poly
+	struct Poly r = initPolyV();
+    struct Poly rh = mul(pubkey.key, r);
+    for (int i = 0; i <= rh.degree; i++)
+        rh.coef[i] *= pubkey.p;
+    struct Poly msg_p = char2poly(c);
+    return mod(add(rh, msg_p), pubkey.q);
+}
+
+char decrypt(const struct Poly ciphertext, struct Private prikey)
 {
     struct Poly a = mod(mul(prikey.f, ciphertext), prikey.q);
     struct Poly m = mod(mul(prikey.f_p, a), prikey.p);
-    poly2msg(m, msg);
+    return poly2char(m);
 }
