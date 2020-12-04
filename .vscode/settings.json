@@ -13,6 +13,7 @@
     ],
     "files.associations": {
         "type_traits": "cpp",
-        "compare": "cpp"
+        "compare": "cpp",
+        "cstdlib": "cpp"
     }
 }
