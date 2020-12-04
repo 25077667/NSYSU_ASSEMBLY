@@ -16,7 +16,7 @@ module rst_counter(clk,len,rst,pre_value,counter_x , counter_y)
 	reg [9:0] iterator;
 	reg [9:0] current_process;
 	reg set_enable;
-	always @(!set_enable)
+	always @(*)
 	begin
 		current_process = current_process - 1;
 		if (current_process == pre_value)
@@ -33,7 +33,7 @@ module rst_counter(clk,len,rst,pre_value,counter_x , counter_y)
 			set_enable = 1;
 		end
 	end
-	always @(!set_enable)
+	always @(*)
 	begin
 		if (counter_y == 0)
 		begin
@@ -48,9 +48,9 @@ module rst_counter(clk,len,rst,pre_value,counter_x , counter_y)
 			//two case if iterator is bigger than current_process , use half of the previous value (bigger one)
 			/*
 				for method 1 , how to acquire another slice?
-			*////
+			*/
 
-			//second case ,  the 
+			//second case ,  the modmul fuction not yet implemented
 		end
 	end
 module set_counter(set_enable , rst , iterator ,counter_x , counter_y , sliced_ntt_twiddle_table ,len)
