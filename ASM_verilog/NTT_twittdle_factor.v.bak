@@ -1,1 +1,15 @@
+module twiddle_factor_table(len)
+input [5:0] len;
+reg [5:0] pre_value = 4;
+//twiddle factor table
+reg [63:0] ntt_twiddle_table [63:0][63:0];
+						//make first index 0-63 , index two
+//for loop to clean first index to 0 
 
+module rst_counter(len,rst,pre_value)
+	
+	reg [63:0] p = 4179340454199820289;
+	reg [63:0] omega = 68630377364883;
+	reg [63:0] m = 57;
+	
+end
