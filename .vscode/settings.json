@@ -1,0 +1,19 @@
+{
+    "cSpell.ignoreWords": [
+        "assembly",
+        "b",
+        "bézout",
+        "bézout's",
+        "coef",
+        "nsysu",
+        "nsysu assembly",
+        "ntru",
+        "zout",
+        "zout's"
+    ],
+    "files.associations": {
+        "type_traits": "cpp",
+        "compare": "cpp",
+        "cstdlib": "cpp"
+    }
+}
