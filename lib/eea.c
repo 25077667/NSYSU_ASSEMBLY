@@ -21,7 +21,7 @@ struct EX_GCD_P extended_euclidean_p(struct Poly a, struct Poly b, int module)
     struct Poly old_t = ZERO, t = ONE;
 
     while (!equal(r, ZERO)) {
-        struct Poly q = div(old_r, r, module);
+        struct Poly q = div2(old_r, r, module);
         struct Poly temp = old_r;
         old_r = r;
         r = sub(temp, mul(q, r));

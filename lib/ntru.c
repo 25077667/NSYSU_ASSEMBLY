@@ -1,4 +1,6 @@
 #include "ntru.h"
+#include <stdlib.h>  // srand
+#include <time.h>
 #include "eea.h"
 
 extern struct Poly ZERO, ONE, NOT_EXIST;
@@ -10,12 +12,10 @@ struct NTRU {
 
 static struct Poly gen_poly(int N, int module)
 {
-    // FIXME: Init as some random methods
-    srand(time(NULL));
     int argv[N];
-    for(int i=0;i<N;i++)
-        argv[i] = rand()%module;
-    return initPolyV2(N,argv);
+    for (int i = 0; i <= N; i++)
+        argv[i] = rand() % module;
+    return initPolyV2(N, argv);
 }
 
 static struct NTRU init_NTRU(int N, int p, int q)
@@ -24,9 +24,10 @@ static struct NTRU init_NTRU(int N, int p, int q)
         .N = N,
         .p = p,
         .q = q,
-        .f = gen_poly(N, 0x7fffffff),
-        .g = gen_poly(N, 0x7fffffff),
+        .f = gen_poly(N - 2, p + 1),
+        .g = gen_poly(N - 2, p + 1),
     };
+    srand(time(NULL));
     return target;
 }
 
@@ -62,21 +63,21 @@ struct Crypto init_Crypto(int N, int p, int q)
     return target;
 }
 
-static struct Poly char2poly(struct Public key, char c) 
+static struct Poly char2poly(struct Public key, char c)
 {
     int arr[8] = {0};
-    char t=1;
-    for (int i=0;i<8;i++,t<<=1)
-        if(c&t)
+    char t = 1;
+    for (int i = 0; i < 8; i++, t <<= 1)
+        if (c & t)
             arr[i] = 1;
-    return initPolyV2(8,arr);
+    return initPolyV2(8, arr);
 }
 
-static char poly2char(const struct Poly m, struct Private key)
+static char poly2char(const struct Poly m)
 {
-    char result=0, t=1;
-    for (int i=0;i<8;i++,t<<=1)
-        if(m.coef[i])
+    char result = 0, t = 1;
+    for (int i = 0; i < 8; i++, t <<= 1)
+        if (m.coef[i])
             result |= t;
     return result;
 }
@@ -97,5 +98,5 @@ char decrypt(const struct Poly ciphertext, struct Private prikey)
 {
     struct Poly a = mod(mul(prikey.f, ciphertext), prikey.q);
     struct Poly m = mod(mul(prikey.f_p, a), prikey.p);
-    return poly2char(m, prikey);
+    return poly2char(m);
 }

@@ -2,8 +2,7 @@
 #define __NTRU_H__
 
 #include "poly.h"
-#include <stdlib.h>
-#include <time.h>
+
 /**
  *
  *                                  ------------
