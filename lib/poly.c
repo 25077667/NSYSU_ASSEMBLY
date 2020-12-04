@@ -21,8 +21,9 @@ static inline void fix_deg(struct Poly *target)
     for (int i = LEN - 1; i >= 0; i--)
         if (target->coef[i]) {
             target->degree = i;
-            break;
+            return;
         }
+    target->degree = 0;
 }
 
 // init as zero
@@ -44,11 +45,12 @@ struct Poly initPolyV(int args, ...)
     va_end(ap);
     return target;
 }
-struct Poly initPolyV2(int args,int* argv)
+
+struct Poly initPolyV2(int argc, int *argv)
 {
     struct Poly target = {.coef = {0}, .degree = 0};
-    target.degree = args - 1;
-    for(int i=0;i<args;i++)
+    target.degree = argc - 1;
+    for (int i = 0; i < argc; i++)
         target.coef[i] = argv[i];
     return target;
 }
@@ -84,7 +86,7 @@ struct Poly mul(struct Poly a, struct Poly b)
     return target;
 }
 
-struct Poly div(struct Poly a, struct Poly b, int module)
+struct Poly div2(struct Poly a, struct Poly b, int module)
 {
     struct Poly quotient = {.coef = {0}, .degree = 0};
     int index = MAX(a.degree, b.degree);
