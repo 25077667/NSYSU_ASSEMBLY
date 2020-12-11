@@ -63,7 +63,7 @@ struct Crypto init_Crypto(int N, int p, int q)
     return target;
 }
 
-static struct Poly char2poly(struct Public key, char c)
+static struct Poly char2poly(char c)
 {
     int arr[8] = {0};
     char t = 1;
@@ -90,7 +90,7 @@ struct Poly encrypt(char c, struct Public pubkey)
     for (int i = 0; i <= rh.degree; i++)
         rh.coef[i] *= pubkey.p;
     // FIXME: What is the max_degree of msg_p? (Is N public?)
-    struct Poly msg_p = char2poly(pubkey, c);
+    struct Poly msg_p = char2poly(c);
     return mod(add(rh, msg_p), pubkey.q);
 }
 
