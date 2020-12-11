@@ -110,9 +110,8 @@ struct Poly div2(struct Poly a, struct Poly b, int module)
 struct Poly mod(struct Poly a, int module)
 {
     for (int i = a.degree; i >= 0; i--)
-        while (a.coef[i] < 0 ||
-               a.coef[i] > module)  // FIXME: might have bug here
-            a.coef[i] = (a.coef[i] + module) % module;
+        while (a.coef[i] < 0 || a.coef[i] > module)
+            a.coef[i] = ((a.coef[i] % module) + module) % module;
     return a;
 }
 
