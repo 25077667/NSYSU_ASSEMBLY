@@ -62,11 +62,11 @@ struct EX_GCD_I extended_euclidean_i(int a, int b)
 int inverse_i(int a, int module)
 {
     struct EX_GCD_I eea = extended_euclidean_i(a, module);
-    return ((eea.gcd == 1) ? (eea.s + module) % module : -1);
+    return ((eea.gcd == 1) ? ((eea.s % module) + module) % module : -1);
 }
 
 struct Poly inverse_p(struct Poly a, struct Poly module, int coprime)
 {
     struct EX_GCD_P eea = extended_euclidean_p(a, module, coprime);
-    return (equal(eea.gcd, ONE) ? mod(add(eea.s, module), coprime) : NOT_EXIST);
+    return (equal(eea.gcd, ONE) ? mod(eea.s, coprime) : NOT_EXIST);
 }
