@@ -2,7 +2,7 @@
 #define __POLY_H__
 #include <stdbool.h>
 #include <stddef.h>
-#define LEN 20
+#define LEN 168
 
 struct Poly {
     unsigned int coef[LEN];
