@@ -1,6 +1,7 @@
 #include "ntru.h"
 #include <stdlib.h>  // srand
 #include <time.h>
+#include <stdio.h>
 #include "eea.h"
 
 extern struct Poly ZERO, ONE, NOT_EXIST;
@@ -20,6 +21,7 @@ static struct Poly gen_poly(int N, int module)
 
 static struct NTRU init_NTRU(int N, int p, int q)
 {
+    srand(time(NULL));
     struct NTRU target = {
         .N = N,
         .p = p,
@@ -27,7 +29,6 @@ static struct NTRU init_NTRU(int N, int p, int q)
         .f = gen_poly(N - 2, p + 1),
         .g = gen_poly(N - 2, p + 1),
     };
-    srand(time(NULL));
     return target;
 }
 
@@ -84,12 +85,11 @@ static char poly2char(const struct Poly m)
 
 struct Poly encrypt(char c, struct Public pubkey)
 {
-    // FIXME: Is r mod q? Is r degree is pubkey's degree?
-    struct Poly r = gen_poly(pubkey.key.degree, pubkey.q);
+    // struct Poly r = gen_poly(pubkey.key.degree, pubkey.q);
+    struct Poly r = ONE;
     struct Poly rh = mod(mul(pubkey.key, r), pubkey.q);
     for (int i = 0; i <= rh.degree; i++)
         rh.coef[i] *= pubkey.p;
-    // FIXME: What is the max_degree of msg_p? (Is N public?)
     struct Poly msg_p = char2poly(c);
     return mod(add(rh, msg_p), pubkey.q);
 }

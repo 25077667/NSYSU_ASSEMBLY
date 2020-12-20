@@ -112,6 +112,7 @@ struct Poly mod(struct Poly a, int module)
     for (int i = a.degree; i >= 0; i--)
         while (a.coef[i] < 0 || a.coef[i] > module)
             a.coef[i] = ((a.coef[i] % module) + module) % module;
+    fix_deg(&a);
     return a;
 }
 
