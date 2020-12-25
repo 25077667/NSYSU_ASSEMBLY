@@ -24,13 +24,13 @@ struct EX_GCD_P extended_euclidean_p(struct Poly a, struct Poly b, int module)
         struct Poly q = div2(old_r, r, module);
         struct Poly temp = old_r;
         old_r = r;
-        r = sub(temp, mul(q, r));
+        r = sub(temp, mul_mod(q, r, module));
         temp = old_s;
         old_s = s;
-        s = sub(temp, mul(q, s));
+        s = sub(temp, mul_mod(q, s, module));
         temp = old_t;
         old_t = t;
-        t = sub(temp, mul(q, t));
+        t = sub(temp, mul_mod(q, t, module));
     }
 
     return (struct EX_GCD_P){.s = old_s, .t = old_t, .gcd = old_r};

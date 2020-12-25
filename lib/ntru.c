@@ -1,7 +1,6 @@
 #include "ntru.h"
 #include <stdlib.h>  // srand
 #include <time.h>
-#include <stdio.h>
 #include "eea.h"
 
 extern struct Poly ZERO, ONE, NOT_EXIST;
@@ -41,7 +40,7 @@ static struct Public gen_pubkey(struct NTRU info)
         .p = info.p,
         .N = info.N,
         /* h = f_q*g mod q*/
-        .key = mod(mul(f_q, info.g), info.q),
+        .key = mul_mod(f_q, info.g, info.q),
     };
 }
 static struct Private gen_prikey(struct NTRU info)
@@ -87,7 +86,7 @@ struct Poly encrypt(char c, struct Public pubkey)
 {
     // struct Poly r = gen_poly(pubkey.key.degree, pubkey.q);
     struct Poly r = ONE;
-    struct Poly rh = mod(mul(pubkey.key, r), pubkey.q);
+    struct Poly rh = mul_mod(pubkey.key, r, pubkey.q);
     for (int i = 0; i <= rh.degree; i++)
         rh.coef[i] *= pubkey.p;
     struct Poly msg_p = char2poly(c);
@@ -96,7 +95,7 @@ struct Poly encrypt(char c, struct Public pubkey)
 
 char decrypt(const struct Poly ciphertext, struct Private prikey)
 {
-    struct Poly a = mod(mul(prikey.f, ciphertext), prikey.q);
-    struct Poly m = mod(mul(prikey.f_p, a), prikey.p);
+    struct Poly a = mul_mod(prikey.f, ciphertext, prikey.q);
+    struct Poly m = mul_mod(prikey.f_p, a, prikey.p);
     return poly2char(m);
 }

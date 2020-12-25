@@ -19,7 +19,7 @@ struct Poly initPolyV(int args, ...);
 struct Poly initPolyV2(int argc, int *argv);
 struct Poly add(struct Poly a, struct Poly b);
 struct Poly sub(struct Poly a, struct Poly b);
-struct Poly mul(struct Poly a, struct Poly b);
+struct Poly mul_mod(struct Poly a, struct Poly b, int module);
 /* Return a/b, gurante divide, and all coefficients are integers in the module*/
 /* div name is rather simple, but the memory management can be a bitch. */
 struct Poly div2(struct Poly a, struct Poly b, int module);

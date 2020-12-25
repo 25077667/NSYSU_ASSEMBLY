@@ -1,6 +1,6 @@
 CC=gcc
 FLAG=-std=gnu99 -Og -Wall -g
-OBJ=eea.o poly.o e4c_lite.o ntru.o
+OBJ=eea.o poly.o e4c_lite.o ntru.o -fsanitize=address
 
 all: dep test
 	@echo "done"

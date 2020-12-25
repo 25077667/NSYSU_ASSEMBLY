@@ -25,7 +25,7 @@ int main(void)
         print_poly(a_ADD_b, GET_NAME(a_ADD_b));
         struct Poly a_SUB_b = sub(a, b);
         print_poly(a_SUB_b, GET_NAME(a_SUB_b));
-        struct Poly a_MUL_b = mul(a, b);
+        struct Poly a_MUL_b = mul_mod(a, b, 11);
         print_poly(a_MUL_b, GET_NAME(a_MUL_b));
         struct Poly b_DIV_a = div2(b, a, 11);
         print_poly(b_DIV_a, GET_NAME(b_DIV_a));

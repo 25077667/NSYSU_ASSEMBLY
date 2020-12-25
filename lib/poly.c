@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include "e4c_lite.h"
+#include "eea.h"
 
 #define MAX(a, b)               \
     ({                          \
@@ -75,7 +76,7 @@ struct Poly sub(struct Poly a, struct Poly b)
     return target;
 }
 
-struct Poly mul(struct Poly a, struct Poly b)
+struct Poly conv(struct Poly a, struct Poly b)
 {
     struct Poly target = {.coef = {0}, .degree = a.degree + b.degree};
     for (int i = 0; i <= a.degree; i++)
@@ -84,6 +85,19 @@ struct Poly mul(struct Poly a, struct Poly b)
 
     fix_deg(&target);
     return target;
+}
+
+/* This is not normal convolution here, needs to mod a module */
+struct Poly mul_mod(struct Poly a, struct Poly b, int module)
+{
+    struct Poly con = conv(a, b);
+    con = mod(con, module);
+    struct Poly quo = div2(con, sub(unitary(1, module), unitary(1, 0)), module);
+    struct Poly near = conv(quo, con);
+    struct Poly reminder = sub(a, near);
+    reminder = mod(reminder, module);
+    fix_deg(&reminder);
+    return reminder;
 }
 
 struct Poly div2(struct Poly a, struct Poly b, int module)
@@ -98,7 +112,7 @@ struct Poly div2(struct Poly a, struct Poly b, int module)
         for (int i = index; i >= b.degree; i--) {
             unsigned int coef = (a.coef[i] * inverse) % module;
             /* Simulate long division: a -= b * quotient[i] */
-            a = mod(sub(a, mod(mul(b, unitary(coef, i - b.degree)), module)),
+            a = mod(sub(a, mod(conv(b, unitary(coef, i - b.degree)), module)),
                     module);
             quotient = mod(add(quotient, unitary(coef, i - b.degree)), module);
         }
